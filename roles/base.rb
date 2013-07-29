@@ -1,14 +1,12 @@
 # Role definition
-name "ganglia-web-frontend"
-description "Node that acts as a ganglia monitor web frontend"
+name "base"
+description "Base recipes for all the Ubuntu nodes"
 
 # List of recipes and roles to apply. Requires Chef 0.8, earlier versions use 'recipes()'.
-run_list("recipe[ganglia::web]")
+run_list("recipe[apt]")
 
 # Attributes applied if the node doesn't have it set already.
-default_attributes "ganglia" => {
-  "cluster_name" => "ganglia-web-frontend"
-}
+#default_attributes()
 
 # Attributes applied no matter what the node has set already.
 #override_attributes()
