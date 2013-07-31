@@ -1,6 +1,6 @@
 <% if false %>
  #
- # Jinja2 template for Ganglia gmond configuration 
+ # Erubis template for Ganglia gmond configuration 
  #
  # Copyright (c) 2013 Tieto
  #
@@ -52,7 +52,7 @@ udp_send_channel {
   mcast_join = 239.0.0.<%= @cluster_id %> /* Just unique mcast ip for the group */
   mcast_if = <%= @provisioning_if %>
   port = <%= 10000 + @cluster_id %>
-  bind = <%= @node[:network][:interfaces][@provisioning_if][:addresses].find {|addr, addr_info| addr_info[:family] == "inet"}.first %>
+  bind = <%= @provisioning_ip %>
   ttl = 1
 }
 
@@ -67,7 +67,7 @@ udp_recv_channel {
    an xml description of the state of the cluster */
 tcp_accept_channel {
   port = <%= 10000 + @cluster_id %>
-  bind = <%= @node[:network][:interfaces][@provisioning_if][:addresses].find {|addr, addr_info| addr_info[:family] == "inet"}.first %>
+  bind = <%= @provisioning_if %>
 }
 
 <% if node[:recipes].include? "ganglia::gmetad" && "ganglia::graphite" -%>

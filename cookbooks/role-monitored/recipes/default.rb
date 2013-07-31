@@ -2,20 +2,21 @@
 # Cookbook Name:: role-monitored
 # Recipe:: default
 #
-# Copyright 2013, YOUR_COMPANY_NAME
+# Copyright (c) 2013 Tieto
 #
-# All rights reserved - Do Not Redistribute
+# author: piotr.pachalko@tieto.com
 #
 
 include_recipe "ganglia"
 
-# own attributes
-node.default[:'role-monitored'][:provisioning_if] = "eth1"
-node.default[:'role-monitored'][:cluster_id]      = 1
+# add attributes
+node.default[:ganglia][:provisioning_if] = "eth1"
+node.default[:ganglia][:provisioning_ip] = node[:network][:interfaces]["eth1"][:addresses].find {|addr, addr_info| addr_info[:family] == "inet"}.first
+node.default[:ganglia][:cluster_id]      = 1
 
 # override attributes
-node.override['ganglia']['unicast'] = true
-node.override['ganglia']['cluster_name'] = 'generic'
+node.override[:ganglia][:unicast] = false
+node.override[:ganglia][:cluster_name] = 'generic-monitored-nodes'
 
 # override template
 begin
@@ -23,9 +24,10 @@ begin
   t.source "gmond.conf.erb"
   t.cookbook "role-monitored"
   t.variables({
-     :cluster_name    => node[:ganglia][:cluster_name],
-     :provisioning_if => node[:'role-monitored'][:provisioning_if],
-     :cluster_id      => node[:'role-monitored'][:cluster_id]
+  	:provisioning_if => node[:ganglia][:provisioning_if],
+  	:provisioning_ip => node[:ganglia][:provisioning_ip],
+  	:cluster_id      => node[:ganglia][:cluster_id],
+  	:cluster_name    => node[:ganglia][:cluster_name]
   })
 rescue Chef::Exceptions::ResourceNotFound
   Chef::Log.warn "could not find template '/etc/ganglia/gmond.conf' to modify"

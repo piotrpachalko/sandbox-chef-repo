@@ -1,14 +1,15 @@
-# Role definition
+#
+# Chef role definition 
+# for ganglia-web-frontend nodes nodes
+#
+# Copyright (c) 2013 Tieto
+#
+# author: piotr.pachalko@tieto.com
+# 
 name "ganglia-web-frontend"
 description "Node that acts as a ganglia monitor web frontend"
 
-# List of recipes and roles to apply. Requires Chef 0.8, earlier versions use 'recipes()'.
-run_list("recipe[ganglia::web]")
+# We use no-role pattern, actual role is defined in a dedicated, versioned cookbook
+run_list("recipe[role-ganglia-web-frontend]")
 
-# Attributes applied if the node doesn't have it set already.
-default_attributes "ganglia" => {
-  "cluster_name" => "ganglia-web-frontend"
-}
-
-# Attributes applied no matter what the node has set already.
-#override_attributes()
+# eof
