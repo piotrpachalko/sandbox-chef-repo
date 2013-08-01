@@ -16,7 +16,7 @@ node.default[:ganglia][:cluster_id]      = 1
 
 # override attributes
 node.override[:ganglia][:unicast] = false
-node.override[:ganglia][:cluster_name] = 'generic-monitored-nodes'
+node.force_default[:ganglia][:cluster_name] = 'generic-monitored-nodes'
 
 # override template
 begin
