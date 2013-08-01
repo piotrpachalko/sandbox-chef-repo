@@ -1,12 +1,15 @@
-# Role definition
+#
+# Chef role definition 
+# base - for all the nodes
+#
+# Copyright (c) 2013 Tieto
+#
+# author: piotr.pachalko@tieto.com
+# 
 name "base"
 description "Base recipes for all the Ubuntu nodes"
 
-# List of recipes and roles to apply. Requires Chef 0.8, earlier versions use 'recipes()'.
-run_list("recipe[apt]")
+# We use no-role pattern, actual role is defined in a dedicated, versioned cookbook
+run_list("recipe[role-base]")
 
-# Attributes applied if the node doesn't have it set already.
-#default_attributes()
-
-# Attributes applied no matter what the node has set already.
-#override_attributes()
+# eof
