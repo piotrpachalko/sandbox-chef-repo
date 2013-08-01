@@ -1,0 +1,37 @@
+<% if false %>
+ #
+ # Erubis template 
+ # 
+ # jmxtrans configuration for exporting kafka monitoring data to ganglia
+ #
+ # Copyright (c) 2013 Tieto
+ #
+ # author: piotr.pachalko@tieto.com
+ #
+<% end %>
+ {
+    "servers" : [ {
+        "port" : "<%= @jmx_port %>",
+        "host" : "<%= @provisioning_ip %>",
+        "queries" : [ {
+            "outputWriters" : [ {
+                "@class" : "com.googlecode.jmxtrans.model.output.GangliaWriter",
+                "settings" : {
+                    "groupName"      : "<%= @cluster_name %>",
+<% if false %>TODO: Multicast does not work ? <% end %>
+                    "addressingMode" : "MULTICAST",
+                    "ttl"            : 1,
+                    "port"           : <%= 10000 + @cluster_id %>,
+                    "host"           : "239.0.0.<%= @cluster_id %>", 
+                    "spoofedHostName": "<%= @provisioning_ip %>"
+                }
+            } ],
+            "obj" : "<%= @jmx_obj %>",
+            <% if @jmx_alias %>
+            "resultAlias": "<%= @jmx_alias %>",
+            <% end %>
+            "attr" : [ <%= @jmx_attrs %> ]
+        } ],
+        "numQueryThreads" : 2
+    } ]
+}
